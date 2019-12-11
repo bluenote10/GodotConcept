@@ -1,23 +1,119 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://light.png" type="Texture" id=3]
+[ext_resource path="res://caster.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 16.2037
 
-[node name="Node2D" type="Node2D"]
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( 0.095932, -0.352272, 39.83, -0.289604, 39.8927, 39.5072, 0.0332489, 39.5072 )
+
+[sub_resource type="OccluderPolygon2D" id=3]
+polygon = PoolVector2Array( -15.8994, -15.9062, 16.0308, -15.9062, 16.0308, 16.1185, -15.9939, 16.1185 )
+
+[node name="Root" type="Node2D"]
+
+[node name="ColorRect8" type="ColorRect" parent="."]
+margin_left = -263.272
+margin_top = -266.272
+margin_right = 1164.73
+margin_bottom = 732.728
+rect_pivot_offset = Vector2( 20.2667, 20.886 )
+color = Color( 0.533333, 0.533333, 0.533333, 1 )
 
 [node name="Player" type="Area2D" parent="."]
-position = Vector2( 364.8, 114.95 )
+position = Vector2( 357.2, 71.25 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="Sprite" type="Sprite" parent="Player"]
+light_mask = 2
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource( 1 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2( 0, -200 )
+rotating = true
+current = true
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+
+[node name="Light2D" type="Light2D" parent="Player"]
+texture = ExtResource( 3 )
+color = Color( 0.662745, 0.772549, 1, 1 )
+shadow_enabled = true
+shadow_color = Color( 0.764706, 0.85098, 0.976471, 0 )
+shadow_filter = 5
+
+[node name="World" type="Node" parent="."]
+
+[node name="ColorRect7" type="ColorRect" parent="World"]
+margin_left = 253.03
+margin_top = 107.47
+margin_right = 293.03
+margin_bottom = 147.47
+rect_pivot_offset = Vector2( 20.2667, 20.886 )
+color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="World/ColorRect7"]
+occluder = SubResource( 2 )
+
+[node name="ColorRect8" type="ColorRect" parent="World"]
+margin_left = 0.330261
+margin_top = 1.0701
+margin_right = 40.3303
+margin_bottom = 41.0701
+rect_pivot_offset = Vector2( 20.2667, 20.886 )
+color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="World/ColorRect8"]
+occluder = SubResource( 2 )
+
+[node name="ColorRect9" type="ColorRect" parent="World"]
+margin_left = 827.437
+margin_top = 328.036
+margin_right = 867.437
+margin_bottom = 368.036
+rect_pivot_offset = Vector2( 20.2667, 20.886 )
+color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="World/ColorRect9"]
+occluder = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="World"]
+position = Vector2( 502.622, -38.6632 )
+texture = ExtResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite"]
+occluder = SubResource( 3 )
+
+[node name="Sprite2" type="Sprite" parent="World"]
+position = Vector2( 481.622, 135.337 )
+texture = ExtResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite2"]
+occluder = SubResource( 3 )
+
+[node name="Sprite3" type="Sprite" parent="World"]
+position = Vector2( 214.622, 7.33673 )
+texture = ExtResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite3"]
+occluder = SubResource( 3 )
+
+[node name="Sprite4" type="Sprite" parent="World"]
+position = Vector2( 400.721, 260.638 )
+texture = ExtResource( 4 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite4"]
+occluder = SubResource( 3 )
