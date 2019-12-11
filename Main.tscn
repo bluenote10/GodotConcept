@@ -16,20 +16,24 @@ polygon = PoolVector2Array( -15.8994, -15.9062, 16.0308, -15.9062, 16.0308, 16.1
 
 [node name="Root" type="Node2D"]
 
-[node name="ColorRect8" type="ColorRect" parent="."]
-margin_left = -263.272
-margin_top = -266.272
-margin_right = 1164.73
-margin_bottom = 732.728
-rect_pivot_offset = Vector2( 20.2667, 20.886 )
-color = Color( 0.533333, 0.533333, 0.533333, 1 )
-
 [node name="Player" type="Area2D" parent="."]
-position = Vector2( 357.2, 71.25 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
+
+[node name="FloorRect" type="ColorRect" parent="Player"]
+margin_left = -1000.0
+margin_top = -1000.0
+margin_right = 1000.0
+margin_bottom = 1000.0
+color = Color( 0.533333, 0.533333, 0.533333, 1 )
+
+[node name="CrosshairLine" type="Line2D" parent="Player"]
+points = PoolVector2Array( 0, 0, 0, -1000 )
+width = 1.5
+default_color = Color( 0.372549, 0.372549, 0.372549, 0.501961 )
+texture_mode = 3080292
 
 [node name="Sprite" type="Sprite" parent="Player"]
 light_mask = 2
@@ -43,6 +47,8 @@ shape = SubResource( 1 )
 position = Vector2( 0, -200 )
 rotating = true
 current = true
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
 drag_margin_left = 0.0
 drag_margin_top = 0.0
 drag_margin_right = 0.0
@@ -58,10 +64,10 @@ shadow_filter = 5
 [node name="World" type="Node" parent="."]
 
 [node name="ColorRect7" type="ColorRect" parent="World"]
-margin_left = 253.03
-margin_top = 107.47
-margin_right = 293.03
-margin_bottom = 147.47
+margin_left = -132.709
+margin_top = 31.7642
+margin_right = -92.7086
+margin_bottom = 71.7642
 rect_pivot_offset = Vector2( 20.2667, 20.886 )
 color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
 
@@ -69,10 +75,10 @@ color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
 occluder = SubResource( 2 )
 
 [node name="ColorRect8" type="ColorRect" parent="World"]
-margin_left = 0.330261
-margin_top = 1.0701
-margin_right = 40.3303
-margin_bottom = 41.0701
+margin_left = -385.408
+margin_top = -74.6357
+margin_right = -345.408
+margin_bottom = -34.6357
 rect_pivot_offset = Vector2( 20.2667, 20.886 )
 color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
 
@@ -80,10 +86,10 @@ color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
 occluder = SubResource( 2 )
 
 [node name="ColorRect9" type="ColorRect" parent="World"]
-margin_left = 827.437
-margin_top = 328.036
-margin_right = 867.437
-margin_bottom = 368.036
+margin_left = 441.698
+margin_top = 252.33
+margin_right = 481.698
+margin_bottom = 292.33
 rect_pivot_offset = Vector2( 20.2667, 20.886 )
 color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
 
@@ -91,28 +97,28 @@ color = Color( 0.0572721, 0.0641509, 0.18797, 1 )
 occluder = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="World"]
-position = Vector2( 502.622, -38.6632 )
+position = Vector2( 116.883, -114.369 )
 texture = ExtResource( 4 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite"]
 occluder = SubResource( 3 )
 
 [node name="Sprite2" type="Sprite" parent="World"]
-position = Vector2( 481.622, 135.337 )
+position = Vector2( 95.8834, 59.6308 )
 texture = ExtResource( 4 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite2"]
 occluder = SubResource( 3 )
 
 [node name="Sprite3" type="Sprite" parent="World"]
-position = Vector2( 214.622, 7.33673 )
+position = Vector2( -171.116, -68.3691 )
 texture = ExtResource( 4 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite3"]
 occluder = SubResource( 3 )
 
 [node name="Sprite4" type="Sprite" parent="World"]
-position = Vector2( 400.721, 260.638 )
+position = Vector2( 14.9827, 184.932 )
 texture = ExtResource( 4 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite4"]
