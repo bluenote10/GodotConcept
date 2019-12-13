@@ -26,7 +26,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="FpsLabel" type="Label" parent="CanvasLayer/MarginContainer"]
-margin_bottom = 14.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 1
 align = 2
 
 [node name="HUD" type="Node" parent="."]

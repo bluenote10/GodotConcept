@@ -19,6 +19,10 @@ config/name="CavesOfTheVoid"
 run/main_scene="res://Main.tscn"
 config/icon="res://textures/icon.png"
 
+[display]
+
+window/stretch/aspect="expand"
+
 [input]
 
 ui_left={
