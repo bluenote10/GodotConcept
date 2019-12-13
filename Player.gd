@@ -40,7 +40,9 @@ func _input(event):
             print(zoom)
 
     elif event is InputEventMouseMotion:
-        rotation += event.relative.x / 400
+        var mouse_mode := Input.get_mouse_mode()
+        if mouse_mode == Input.MOUSE_MODE_CAPTURED:
+            rotation += event.relative.x / 400
     
 
 func _physics_process(delta):

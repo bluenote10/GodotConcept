@@ -10,6 +10,13 @@ func _input(event):
         if event.is_action_pressed("ui_toggle_fullscreen"):
             print("Toggeling fullscreen")
             OS.window_fullscreen = !OS.window_fullscreen
+        if event.is_action_pressed("ui_toggle_mouse"):
+            print("Toggeling mouse")
+            var mouse_mode := Input.get_mouse_mode()
+            if mouse_mode == Input.MOUSE_MODE_CAPTURED:
+                Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+            else:
+                Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _process(delta):
@@ -25,5 +32,5 @@ func _process(delta):
         fps = times.size() / delta
     
     if last_update == -1 or now - last_update > 200:
-        $Player/Camera2D/FpsLabel.text = "%.1f" % fps
+        $CanvasLayer/MarginContainer/FpsLabel.text = "%.1f" % fps
         last_update = now
