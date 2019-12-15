@@ -1,0 +1,22 @@
+[gd_scene format=2]
+
+[node name="Node" type="Node"]
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 1000, 500 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Label" type="Label" parent="ViewportContainer/Viewport"]
+margin_right = 76.0
+margin_bottom = 14.0
+text = "Hello World"
+
+[node name="ColorRect" type="ColorRect" parent="ViewportContainer/Viewport"]
+margin_right = 40.0
+margin_bottom = 40.0
+color = Color( 0.894118, 0, 0, 1 )
