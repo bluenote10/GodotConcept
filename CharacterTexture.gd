@@ -22,13 +22,13 @@ func draw_line_antialiased(p1, p2, color=Color(1.0, 1.0, 1.0, 1.0), width=1.0):
     var delta = p2 - p1
     var rotation = atan2(delta.x, delta.y)
     
-    var tansform = Transform2D()
+    var transform = Transform2D()
     # Subtract half a pixel ensures that the texture aligns with physical pixels
-    tansform *= Transform2D().translated(center - Vector2(0.5, 0.5))
-    tansform *= Transform2D().rotated(-rotation)
-    tansform *= Transform2D().scaled(Vector2(width, delta.length()))
+    transform *= Transform2D().translated(center - Vector2(0.5, 0.5))
+    transform *= Transform2D().rotated(-rotation)
+    transform *= Transform2D().scaled(Vector2(width, delta.length()))
     
-    draw_set_transform_matrix(tansform)
+    draw_set_transform_matrix(transform)
     # The texture has a 3x1 resolution, subtracting by half, because the above
     # transforms to the drawing center (not upper left coordinate as it would 
     # be with (0, 0)).

@@ -31,6 +31,8 @@ func _process(delta):
     if delta != 0:
         fps = times.size() / delta
     
+    var player_pos = $Player.position
+    
     if last_update == -1 or now - last_update > 200:
-        $CanvasLayer/MarginContainer/FpsLabel.text = "%.1f" % fps
+        $CanvasLayer/MarginContainer/FpsLabel.text = "%.1f %.1f %.1f" % [player_pos.x, player_pos.y, fps]
         last_update = now
