@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://resources/Mono50.tres" type="DynamicFont" id=4]
 [ext_resource path="res://textures/light.png" type="Texture" id=5]
 [ext_resource path="res://textures/caster.png" type="Texture" id=6]
+[ext_resource path="res://textures/character.png" type="Texture" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 16.2037
@@ -16,10 +17,14 @@ polygon = PoolVector2Array( 0.095932, -0.352272, 39.83, -0.289604, 39.8927, 39.5
 [sub_resource type="OccluderPolygon2D" id=3]
 polygon = PoolVector2Array( -15.8994, -15.9062, 16.0308, -15.9062, 16.0308, 16.1185, -15.9939, 16.1185 )
 
+[sub_resource type="CircleShape2D" id=4]
+radius = 28.7574
+
 [node name="Root" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+editor/display_folded = true
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchor_right = 1.0
@@ -31,13 +36,10 @@ margin_bottom = 600.0
 size_flags_vertical = 1
 align = 2
 
-[node name="HUD" type="Node" parent="."]
-
-[node name="Player" type="Area2D" parent="."]
+[node name="Player" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+can_sleep = false
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="FloorRect" type="ColorRect" parent="Player"]
 margin_left = -1000.0
@@ -154,3 +156,21 @@ texture = ExtResource( 6 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite4"]
 occluder = SubResource( 3 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="World"]
+position = Vector2( -74.6464, -181.951 )
+gravity_scale = 0.0
+
+[node name="TextureRect" type="TextureRect" parent="World/RigidBody2D"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -32.0
+margin_top = -32.0
+margin_right = 32.0
+margin_bottom = 32.0
+texture = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/RigidBody2D"]
+shape = SubResource( 4 )

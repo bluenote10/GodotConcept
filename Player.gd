@@ -1,16 +1,20 @@
-extends Area2D
+extends RigidBody2D
 
-export var speed = 200  # How fast the player will move (pixels/sec).
+export var max_speed = 200
+export var acceleration = 10000
+
 export var zoom_speed = 1.1
 export var camera_offset = 200
 
 var screen_size  # Size of the game window.
+var mouse_delta := Vector2(0, 0)
 
 
 func set_camera(camera, zoom):
     camera.zoom.x = zoom
     camera.zoom.y = zoom
     camera.position.y = - zoom * camera_offset
+
 
 func _ready():
     screen_size = get_viewport_rect().size
@@ -54,10 +58,38 @@ func _input(event):
     elif event is InputEventMouseMotion:
         var mouse_mode := Input.get_mouse_mode()
         if mouse_mode == Input.MOUSE_MODE_CAPTURED:
-            rotation += event.relative.x / 400
+            #rotation += event.relative.x / 400
+            mouse_delta += event.relative
+   
+func _integrate_forces(state):
+    var delta = Vector2()
+    if Input.is_action_pressed("ui_right"):
+        delta.x += 1
+    if Input.is_action_pressed("ui_left"):
+        delta.x -= 1
+    if Input.is_action_pressed("ui_down"):
+        delta.y += 1
+    if Input.is_action_pressed("ui_up"):
+        delta.y -= 1
     
+    if delta.length() > 0:
+        delta = delta.normalized() * state.get_step() * acceleration
+
+    #velocity = move_and_slide(velocity.rotated(rotation))
+    #state.set_linear_velocity(velocity.rotated(rotation))
+    if delta.length() > 0:
+        state.apply_central_impulse(delta.rotated(rotation))
+    
+        if state.linear_velocity.length() > max_speed:
+            state.set_linear_velocity(state.linear_velocity.normalized() * max_speed)
+    
+    else:
+        state.set_linear_velocity(state.linear_velocity / 2)
+         
+
 
 func _physics_process(delta):
+    """
     var velocity = Vector2()  # The player's movement vector.
     if Input.is_action_pressed("ui_right"):
         velocity.x += 1
@@ -69,7 +101,12 @@ func _physics_process(delta):
         velocity.y -= 1
     if velocity.length() > 0:
         velocity = velocity.normalized() * speed
-    #$AnimatedSprite.play()
-    #$AnimatedSprite.stop()
 
-    position += velocity.rotated(rotation) * delta
+    #position += velocity.rotated(rotation) * delta
+    velocity = move_and_slide(velocity.rotated(rotation))
+    """
+    
+    #print(Input.get_last_mouse_speed())
+    rotation += mouse_delta.x / 400
+
+    mouse_delta = Vector2(0, 0)
