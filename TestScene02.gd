@@ -1,26 +1,38 @@
 extends Node2D
 
-func _ready():
+func render_scene_to_texture(viewport_size, node_position, scene_path):
     # Create viewport
     var viewport = Viewport.new()
-    viewport.size = Vector2(200, 200)
+    viewport.size = Vector2(40, 40)
     viewport.render_target_update_mode = Viewport.UPDATE_ALWAYS
+    viewport.render_target_v_flip = true
     
-    # Create some test content
-    var rect = ColorRect.new()
-    rect.color = Color(1, 0, 0)
-    rect.rect_size = Vector2(100, 100)
-    viewport.add_child(rect)
-    
-    var text = Label.new()
-    text.text = "Hello World"
-    viewport.add_child(text)
-
-    #var cam = Camera2D.new()
-    #viewport.add_child(cam)
+    # Add scene
+    var packed_scene = load("res://CharacterTexture.tscn")
+    var scene = packed_scene.instance()
+    scene.position = Vector2(18, 18)
+    viewport.add_child(scene)
     
     # Add to scene
-    #rect.show()
+    add_child(viewport)
+
+    return viewport
+
+
+func _ready_old():
+    # Create viewport
+    var viewport = Viewport.new()
+    viewport.size = Vector2(40, 40)
+    viewport.render_target_update_mode = Viewport.UPDATE_ALWAYS
+    viewport.render_target_v_flip = true
+    
+    # Add scene
+    var packed_scene = load("res://CharacterTexture.tscn")
+    var scene = packed_scene.instance()
+    scene.position = Vector2(18, 18)
+    viewport.add_child(scene)
+    
+    # Add to scene
     add_child(viewport)
 
     # Wait for content
@@ -30,22 +42,33 @@ func _ready():
     # Fetch viewport content
     var texture = viewport.get_texture()
     var image = texture.get_data()
-    image.flip_y()
     image.save_png("test.png")
 
     print(image.get_width())
     print(image.get_height())
     print("written test.png")
+   
+    $TextureRect.texture = texture
     
-    #var im2 = Image.new()
-    print(image)
-    print(image.get_data())
-    var raw = image.get_data()
-    var sum = 0
-    for x in raw:
-        sum += x
-    print("Pixel sum: ", sum)
     
-    #$TextureRect.texture = texture
-    #$TextureRect.texture
+func _ready():
+    var viewport = render_scene_to_texture(Vector2(40, 40), Vector2(18, 18), "res://CharacterTexture.tscn")
+
+    yield(get_tree(), "idle_frame")
+    yield(get_tree(), "idle_frame")
+    
+    # Extract texture from viewport
+    var texture = ImageTexture.new()
+    texture.create_from_image(viewport.get_texture().get_data())
+    viewport.queue_free()
+    
+    # Fetch viewport content
+    var image = texture.get_data()
+    image.save_png("test.png")
+
+    print(image.get_width())
+    print(image.get_height())
+    print("written test.png")
+
+    $TextureRect.texture = texture
     

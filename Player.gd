@@ -20,6 +20,18 @@ func _ready():
 
     set_camera($Camera2D, 1.0)
 
+    var viewport = Utils.render_scene_to_texture(
+        self, Vector2(80, 80), Vector2(40, 40), 2.1, "res://CharacterTexture.tscn")
+    yield(get_tree(), "idle_frame")
+    yield(get_tree(), "idle_frame")
+    # Extract texture from viewport
+    var texture = ImageTexture.new()
+    texture.create_from_image(viewport.get_texture().get_data())
+    viewport.queue_free()
+
+    $Sprite.texture = texture
+    $Sprite.scale = Vector2(0.4, 0.4)
+
 
 func _input(event):
     if event is InputEventMouseButton:

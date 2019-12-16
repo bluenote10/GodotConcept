@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "Utils",
+"language": "GDScript",
+"path": "res://Utils.gd"
+} ]
 _global_script_class_icons={
-
+"Utils": ""
 }
 
 [application]
@@ -18,6 +23,10 @@ _global_script_class_icons={
 config/name="CavesOfTheVoid"
 run/main_scene="res://Main.tscn"
 config/icon="res://textures/icon.png"
+
+[autoload]
+
+Utils="*res://Utils.gd"
 
 [display]
 
