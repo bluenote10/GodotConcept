@@ -7,6 +7,8 @@ var enemy_radius = 16
 
 
 func _ready():
+    # Possibly needed if we need in-pause enemy processing
+    # pause_mode = Node.PAUSE_MODE_PROCESS
     
     var scale_fraction = enemy_radius / $CollisionShape2D.shape.radius
     print("Scaling enemy to radius %f with scale %f" % [enemy_radius, scale_fraction])
@@ -14,6 +16,10 @@ func _ready():
     
 
 func _physics_process(delta_time):
+    # If using in-pause enemy processing, we could simply skip computing
+    # movement here like that:
+    # if get_tree().paused:
+    #     return
 
     var players = get_tree().get_nodes_in_group("player")
     if players.size() != 1:

@@ -17,6 +17,11 @@ func set_camera(camera, zoom):
 
 
 func _ready():
+    # Exclude player from pause mode
+    # Maybe we need this instead (if enemies also need processing, and just Physics should shut down?):
+    # https://godotengine.org/qa/31777/pause-scene-but-have-process-mode-nodes-still-process-physics?show=31783#a31783
+    pause_mode = Node.PAUSE_MODE_PROCESS
+
     screen_size = get_viewport_rect().size
     
     # Note: Maybe we want to do this: https://docs.godotengine.org/en/3.1/tutorials/inputs/custom_mouse_cursor.html
@@ -105,6 +110,25 @@ func _physics_process(delta):
     #position += velocity.rotated(rotation) * delta
     velocity = move_and_slide(velocity.rotated(rotation))
     """
+    
+    var any_keypress = \
+        Input.is_action_pressed("ui_right") or \
+        Input.is_action_pressed("ui_left") or \
+        Input.is_action_pressed("ui_down") or \
+        Input.is_action_pressed("ui_up") or \
+        Input.is_action_pressed("ui_wait") or \
+        Input.is_mouse_button_pressed(0) or \
+        Input.is_mouse_button_pressed(1) or \
+        Input.is_mouse_button_pressed(2)
+    
+    if any_keypress or mouse_delta.length() > 0:
+        if get_tree().paused == true:
+            print("resuming")
+            get_tree().paused = false
+    else:
+        if get_tree().paused == false:
+            print("pausing")
+            get_tree().paused = true
     
     #print(Input.get_last_mouse_speed())
     rotation += mouse_delta.x / 400

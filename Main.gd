@@ -34,5 +34,10 @@ func _process(delta):
     var player_pos = $Player.position
     
     if last_update == -1 or now - last_update > 200:
-        $CanvasLayer/MarginContainer/FpsLabel.text = "%.1f %.1f %.1f" % [player_pos.x, player_pos.y, fps]
+        $CanvasLayer/MarginContainer/VBoxContainer/FpsLabel.text = "%.1f %.1f %.1f" % [player_pos.x, player_pos.y, fps]
         last_update = now
+        
+    if get_tree().paused:
+        $CanvasLayer/MarginContainer/VBoxContainer/PauseLabel.text = "PAUSED"
+    else:
+        $CanvasLayer/MarginContainer/VBoxContainer/PauseLabel.text = "RUNNING"
