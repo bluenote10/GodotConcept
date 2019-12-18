@@ -7,7 +7,11 @@ export var zoom_speed = 1.1
 export var camera_offset = 200
 
 var screen_size  # Size of the game window.
+
+# Input variables accumulated in _input
 var mouse_delta := Vector2(0, 0)
+var attack_fired := false
+
 
 
 func set_camera(camera, zoom):
@@ -46,8 +50,11 @@ func _input(event):
     if event is InputEventMouseButton:
         print("Mouse Click/Unclick at: ", event.position)
 
+        if event.is_pressed() and event.button_index == BUTTON_LEFT:
+            attack_fired = true
+
         # Mouse wheel events are also passed in as mouse button events
-        if event.is_pressed():
+        if event.is_pressed() and (event.button_index == BUTTON_WHEEL_DOWN or event.button_index == BUTTON_WHEEL_UP):
             var camera = $Camera2D
             var zoom = camera.zoom.x
             if event.button_index == BUTTON_WHEEL_DOWN:
@@ -124,14 +131,39 @@ func _physics_process(delta):
     
     if (any_keypress or mouse_delta.length() > 0) and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
         if get_tree().paused == true:
-            print("resuming")
             get_tree().paused = false
     else:
         if get_tree().paused == false:
-            print("pausing")
             get_tree().paused = true
     
-    #print(Input.get_last_mouse_speed())
+    # Handle accumulated mouse delta
+    # Note: Input.get_last_mouse_speed() returns really weird results here...
     rotation += mouse_delta.x / 400
 
+    # Handle accumulated triggers
+    if attack_fired:
+        fire_melee_attack()
+
+    # Reset accumulated input variables
     mouse_delta = Vector2(0, 0)
+    attack_fired = false
+    
+    
+func fire_melee_attack():
+    var weapon = load("res://scenes/Weapon.tscn").instance()
+    add_child(weapon)
+    
+    var weapon_animation = weapon.get_node("AnimationPlayer")
+    weapon_animation.play_backwards("attack")
+    
+    weapon_animation.connect("animation_finished", self, "weapon_anim_finished", [weapon])
+    
+    
+func weapon_anim_finished(anim_name, weapon_node):
+    weapon_node.queue_free()
+    
+    
+    
+    
+    
+    
