@@ -68,14 +68,15 @@ func _input(event):
    
 func _integrate_forces(state):
     var delta = Vector2()
-    if Input.is_action_pressed("ui_right"):
-        delta.x += 1
-    if Input.is_action_pressed("ui_left"):
-        delta.x -= 1
-    if Input.is_action_pressed("ui_down"):
-        delta.y += 1
-    if Input.is_action_pressed("ui_up"):
-        delta.y -= 1
+    if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+        if Input.is_action_pressed("ui_right"):
+            delta.x += 1
+        if Input.is_action_pressed("ui_left"):
+            delta.x -= 1
+        if Input.is_action_pressed("ui_down"):
+            delta.y += 1
+        if Input.is_action_pressed("ui_up"):
+            delta.y -= 1
     
     if delta.length() > 0:
         delta = delta.normalized() * state.get_step() * acceleration
@@ -121,7 +122,7 @@ func _physics_process(delta):
         Input.is_mouse_button_pressed(1) or \
         Input.is_mouse_button_pressed(2)
     
-    if any_keypress or mouse_delta.length() > 0:
+    if (any_keypress or mouse_delta.length() > 0) and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
         if get_tree().paused == true:
             print("resuming")
             get_tree().paused = false
