@@ -76,11 +76,14 @@ func generate_walls():
 
 
 func generate_enemies():
-    var enemy = load("res://Enemy.tscn").instance()
-    #enemy.get_node("ScaleNode").scale = Vector2(0.2, 0.2)
-    enemy.scale = Vector2(0.2, 0.2)
-    enemy.position = Vector2(100, 100)
-    add_child(enemy)
+    var num_enemies = 20
+    
+    for i in num_enemies:
+        var enemy = load("res://Enemy.tscn").instance()
+        enemy.position = Vector2(rand_range(-1000, 1000), -rand_range(-1000, 1000))
+        enemy.enemy_radius = rand_range(8, 16)
+        enemy.max_speed = rand_range(50, 220)
+        add_child(enemy)
     
     
 
