@@ -18,10 +18,10 @@ polygon = PoolVector2Array( 0.095932, -0.352272, 39.83, -0.289604, 39.8927, 39.5
 [sub_resource type="OccluderPolygon2D" id=3]
 polygon = PoolVector2Array( -15.8994, -15.9062, 16.0308, -15.9062, 16.0308, 16.1185, -15.9939, 16.1185 )
 
-[sub_resource type="PhysicsMaterial" id=5]
+[sub_resource type="PhysicsMaterial" id=4]
 bounce = 1.0
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=5]
 radius = 28.7574
 
 [node name="Root" type="Node2D"]
@@ -39,7 +39,9 @@ margin_bottom = 600.0
 size_flags_vertical = 1
 align = 2
 
-[node name="Player" type="RigidBody2D" parent="."]
+[node name="Player" type="RigidBody2D" parent="." groups=[
+"player",
+]]
 mode = 2
 gravity_scale = 0.0
 can_sleep = false
@@ -164,7 +166,7 @@ occluder = SubResource( 3 )
 
 [node name="RigidBody2D" type="RigidBody2D" parent="World"]
 position = Vector2( -74.6464, -181.951 )
-physics_material_override = SubResource( 5 )
+physics_material_override = SubResource( 4 )
 gravity_scale = 0.0
 
 [node name="TextureRect" type="TextureRect" parent="World/RigidBody2D"]
@@ -179,4 +181,4 @@ margin_bottom = 32.0
 texture = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/RigidBody2D"]
-shape = SubResource( 4 )
+shape = SubResource( 5 )

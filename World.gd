@@ -28,8 +28,7 @@ func compute_transform(p1, p2, width=1.0):
     return transform
 
 
-func _ready():
-
+func generate_walls():
     var texture = load("res://textures/caster.png")
 
     var num_walls = 100
@@ -74,3 +73,18 @@ func _ready():
         wall.add_child(collider)
         
         add_child(wall)
+
+
+func generate_enemies():
+    var enemy = load("res://Enemy.tscn").instance()
+    #enemy.get_node("ScaleNode").scale = Vector2(0.2, 0.2)
+    enemy.scale = Vector2(0.2, 0.2)
+    enemy.position = Vector2(100, 100)
+    add_child(enemy)
+    
+    
+
+func _ready():
+
+    generate_walls()
+    generate_enemies()
