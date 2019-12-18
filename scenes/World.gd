@@ -79,7 +79,7 @@ func generate_enemies():
     var num_enemies = 20
     
     for i in num_enemies:
-        var enemy = load("res://Enemy.tscn").instance()
+        var enemy = load("res://scenes/Enemy.tscn").instance()
         enemy.position = Vector2(rand_range(-1000, 1000), -rand_range(-1000, 1000))
         enemy.enemy_radius = rand_range(8, 16)
         enemy.max_speed = rand_range(50, 220)

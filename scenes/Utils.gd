@@ -10,7 +10,7 @@ static func render_scene_to_texture(node, viewport_size, node_position, scale, s
     viewport.transparent_bg = true
    
     # Add scene
-    var packed_scene = load("res://CharacterTexture.tscn")
+    var packed_scene = load("res://scenes/CharacterTexture.tscn")
     var scene = packed_scene.instance()
     scene.position = node_position
     scene.scale = Vector2(scale, scale)
