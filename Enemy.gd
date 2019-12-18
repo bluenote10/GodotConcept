@@ -20,15 +20,23 @@ func _physics_process(delta_time):
         push_warning("Expected to find a single player")
     
     else:
+        # First compute primary target (player)
         var target = players[0].position
         var delta = target - position
         
-        print(target, position)
-        print(delta.length())
+        # Compute distance to primary target
+        target = target - delta.normalized() * 100.0
+        delta = target - position
         
-        delta = delta.normalized() * max_speed
+        # To account for overshooting, we need to feed move_and_slide with
+        # a velocity that incorporates the frame duration. Simply compute
+        # via v = s / t.
+        var required_velocity = (delta.length() / delta_time)
+        required_velocity = clamp(required_velocity, -max_speed, max_speed)
 
-        move_and_slide(delta)
+        delta = delta.normalized() * required_velocity
+
+        var actual_velocity = move_and_slide(delta)
         
 
 # Old implementation based on RigidBody2D        
