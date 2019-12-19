@@ -1,5 +1,4 @@
-extends Area2D
-
+extends Node2D
 
 func _ready():
     $Particles2D.lifetime = 1.0

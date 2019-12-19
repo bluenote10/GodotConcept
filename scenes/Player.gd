@@ -53,7 +53,6 @@ func _ready():
 
 func _input(event):
     if event is InputEventMouseButton:
-        print("Mouse Click/Unclick at: ", event.position)
 
         if event.is_pressed() and event.button_index == BUTTON_LEFT:
             attack_fired = true
@@ -70,7 +69,7 @@ func _input(event):
             set_camera(camera, zoom)
             
             $CrosshairLine.width = zoom
-            print(zoom)
+            print("Zoomed to: ", zoom)
 
     elif event is InputEventMouseMotion:
         var mouse_mode := Input.get_mouse_mode()
