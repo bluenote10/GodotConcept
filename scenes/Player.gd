@@ -6,6 +6,11 @@ export var acceleration = 10000
 export var zoom_speed = 1.1
 export var camera_offset = 200
 
+const DAMAGE_POINT_SCENE = preload("res://scenes/DamagePoint.tscn")
+
+var DamagePointLauncher = load("res://scenes/DamagePointLauncher.gd")
+var damage_point_launcher: DamagePointLauncher = null
+
 var screen_size  # Size of the game window.
 
 # Input variables accumulated in _input
@@ -144,12 +149,25 @@ func _physics_process(delta):
     if attack_fired:
         fire_melee_attack()
 
+    # Process damge point launcher if needed
+    if damage_point_launcher != null and not get_tree().paused == true:
+        damage_point_launcher.process_physics(delta)
+
     # Reset accumulated input variables
     mouse_delta = Vector2(0, 0)
     attack_fired = false
     
     
 func fire_melee_attack():
+    #var damage_point = DAMAGE_POINT_SCENE.instance()
+    #damage_point.position = Vector2(0, -10)
+    #damage_point.pause_mode = Node.PAUSE_MODE_STOP
+    #add_child(damage_point)
+    damage_point_launcher = DamagePointLauncher.new()
+    damage_point_launcher.init(self)
+ 
+   
+func fire_melee_attack_animation():
     var weapon = load("res://scenes/Weapon.tscn").instance()
     add_child(weapon)
     
