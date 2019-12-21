@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Player.gd" type="Script" id=2]
@@ -8,6 +8,9 @@
 [ext_resource path="res://scenes/World.gd" type="Script" id=6]
 [ext_resource path="res://textures/caster.png" type="Texture" id=7]
 [ext_resource path="res://textures/character.png" type="Texture" id=8]
+
+[sub_resource type="CanvasItemMaterial" id=6]
+light_mode = 2
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 16.2037
@@ -61,11 +64,12 @@ can_sleep = false
 script = ExtResource( 2 )
 
 [node name="FloorRect" type="ColorRect" parent="Player"]
+material = SubResource( 6 )
 margin_left = -1000.0
 margin_top = -1000.0
 margin_right = 1000.0
 margin_bottom = 1000.0
-color = Color( 0.533333, 0.533333, 0.533333, 1 )
+color = Color( 0.94902, 0.94902, 0.94902, 1 )
 
 [node name="CrosshairLine" type="Line2D" parent="Player"]
 points = PoolVector2Array( 0, 0, 0, -1000 )
@@ -110,7 +114,6 @@ drag_margin_bottom = 0.0
 texture = ExtResource( 5 )
 color = Color( 0.662745, 0.772549, 1, 1 )
 shadow_enabled = true
-shadow_color = Color( 0.764706, 0.85098, 0.976471, 0 )
 shadow_filter = 5
 
 [node name="World" type="Node" parent="."]

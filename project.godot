@@ -86,5 +86,6 @@ ui_wait={
 
 [rendering]
 
+environment/default_clear_color=Color( 0.133333, 0.133333, 0.133333, 1 )
 quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"

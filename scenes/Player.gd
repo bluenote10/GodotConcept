@@ -11,8 +11,6 @@ const DAMAGE_POINT_SCENE = preload("res://scenes/DamagePoint.tscn")
 var DamagePointLauncher = load("res://scenes/DamagePointLauncher.gd")
 var damage_point_launcher: DamagePointLauncher = null
 
-var screen_size  # Size of the game window.
-
 # Input variables accumulated in _input
 var mouse_delta := Vector2(0, 0)
 var attack_fired := false
@@ -24,14 +22,21 @@ func set_camera(camera, zoom):
     camera.zoom.y = zoom
     camera.position.y = - zoom * camera_offset
 
+    # TODO: probably this logic need to re-run after resizing?
+    var screen_size = get_viewport_rect().size
+    
+    # Adjust floor to always cover visible area
+    # Note: In y-direction, we don't account for the exact y position of the player,
+    # just use twice the y resultion, which should always be enough.
+    $FloorRect.rect_position = Vector2(-screen_size.x / 2 * zoom, -screen_size.y * zoom)
+    $FloorRect.rect_size = Vector2(screen_size.x * zoom, screen_size.y * 2 * zoom)
+
 
 func _ready():
     # Exclude player from pause mode
     # Maybe we need this instead (if enemies also need processing, and just Physics should shut down?):
     # https://godotengine.org/qa/31777/pause-scene-but-have-process-mode-nodes-still-process-physics?show=31783#a31783
     pause_mode = Node.PAUSE_MODE_PROCESS
-
-    screen_size = get_viewport_rect().size
     
     # Note: Maybe we want to do this: https://docs.godotengine.org/en/3.1/tutorials/inputs/custom_mouse_cursor.html
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
