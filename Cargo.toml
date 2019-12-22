@@ -9,5 +9,9 @@ crate-type = ["cdylib"]
 # For now use vendored path
 gdnative = { path = "../godot-rust/gdnative" }
 rand = "*"
+clipping = "*"  # Note: GPL licensed, replace by Vatti algorithm eventually...
+
+geo = "*"
+geo-booleanop = "*"
 
 # RUST_BACKTRACE=1 cargo watch -x build --clear

@@ -11,7 +11,7 @@ func _ready():
     # pause_mode = Node.PAUSE_MODE_PROCESS
     
     var scale_fraction = enemy_radius / $CollisionShape2D.shape.radius
-    print("Scaling enemy to radius %f with scale %f" % [enemy_radius, scale_fraction])
+    # print("Scaling enemy to radius %f with scale %f" % [enemy_radius, scale_fraction])
     scale = Vector2(scale_fraction, scale_fraction)
     
 

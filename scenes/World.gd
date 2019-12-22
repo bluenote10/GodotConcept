@@ -88,6 +88,8 @@ func generate_enemies():
     
 
 func _ready():
-
+    var rust_world = $"../RustWorld"
+    print(rust_world.get_world())
+    
     generate_walls()
     generate_enemies()
