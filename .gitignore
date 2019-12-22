@@ -9,5 +9,11 @@ export_presets.cfg
 # System/tool-specific ignores
 .directory
 *~
+.watchcode.log
 
+# Rust
+/target/
+/Cargo.lock
+
+# Debugging files
 test*.png*

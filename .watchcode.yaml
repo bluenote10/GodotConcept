@@ -1,0 +1,24 @@
+filesets:
+  default:
+    include:
+      - ".watchcode.yaml"
+      - "src/*"
+      - "Cargo.toml"
+    exclude:
+      - ".watchcode.log"
+
+    exclude_gitignore: true
+    match_mode: "gitlike"
+
+tasks:
+  default:
+    fileset: default
+    commands:
+      - cargo build
+    clear_screen: true
+    queue_events: false
+
+default_task: default
+log: false
+sound: true
+notifications: true

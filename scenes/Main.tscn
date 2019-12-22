@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Player.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/World.gd" type="Script" id=6]
 [ext_resource path="res://textures/caster.png" type="Texture" id=7]
 [ext_resource path="res://textures/character.png" type="Texture" id=8]
+[ext_resource path="res://scenes/RustWorld.gdns" type="Script" id=9]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 light_mode = 2
@@ -199,3 +200,6 @@ texture = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/RigidBody2D"]
 shape = SubResource( 6 )
+
+[node name="RustWorld" type="Node" parent="."]
+script = ExtResource( 9 )
