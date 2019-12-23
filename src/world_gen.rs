@@ -90,7 +90,7 @@ pub fn connect_rooms(rooms: &[Room]) -> MultiPolygon {
 pub fn generate_floor() -> geo::MultiPolygon<f32> {
     godot_print!("Generating floor...");
 
-    let rooms = generate_rooms(3);
+    let rooms = generate_rooms(5);
     let hallways = connect_rooms(&rooms);
 
     //let mut joined = CPolygon::new();

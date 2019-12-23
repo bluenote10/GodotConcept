@@ -61,6 +61,8 @@ func generate_wall(p1, p2, texture):
     collider.shape = shape
     wall.add_child(collider)
     
+    wall.collision_layer = 1 | 2
+    
     return wall
     
     

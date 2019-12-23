@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 export var max_speed = 100
 export var acceleration = 1000
-export var melee_margin: float = 50
+export var melee_margin: float = 80
 
 var enemy_radius = 16
 
@@ -75,13 +75,22 @@ func handle_visibility(target, player):
             position,
             position + radial_normal * enemy_radius * 0.9,
         ]
+
+        # Temporarily switch to the "walls only" collision layer so that only walls
+        # and the current enemy are visible for the player (and other enemies don't
+        # occlude the view).
+        # But super weird, we have to adjust the layer, not the mask, big surprise in general:
+        # https://godotengine.org/qa/3020/collision-masks-and-its-propper-uses
+        var old_collision_layer = self.collision_layer
+        self.collision_layer = 2
     
         var result = null
         for test_point in test_points:
-            result = space_state.intersect_ray(target, test_point)
+            result = space_state.intersect_ray(target, test_point, [], 2)
             # Weird somehow we need the result.size() > 0 check here...
             if result != null and result.size() > 0 and result.rid == get_rid():
                 break
+        self.collision_layer = old_collision_layer
 
         # print("target: ", target)
         # print("enemy: ", position)
@@ -103,6 +112,8 @@ func handle_visibility(target, player):
                 # Note it is crucial to enforce a draw update, otherwise the debug
                 # drawing never updates...
                 update()
+        else:
+            visible = false
         
 
 func _draw():
