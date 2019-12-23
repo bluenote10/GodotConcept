@@ -2,8 +2,12 @@ extends KinematicBody2D
 
 export var max_speed = 100
 export var acceleration = 1000
+export var melee_margin: float = 50
 
 var enemy_radius = 16
+
+var debug_visibility: bool = false
+var debug_visibility_points: PoolVector2Array = []
 
 
 func _ready():
@@ -13,7 +17,10 @@ func _ready():
     var scale_fraction = enemy_radius / $CollisionShape2D.shape.radius
     # print("Scaling enemy to radius %f with scale %f" % [enemy_radius, scale_fraction])
     scale = Vector2(scale_fraction, scale_fraction)
-    
+
+    # Start invisible -- visibility is handled in _process_physics
+    visible = false
+
 
 func _physics_process(delta_time):
     # If using in-pause enemy processing, we could simply skip computing
@@ -28,22 +35,81 @@ func _physics_process(delta_time):
     else:
         # First compute primary target (player)
         var target = players[0].position
-        var delta = target - position
-        
-        # Compute distance to primary target
-        target = target - delta.normalized() * 100.0
-        delta = target - position
-        
-        # To account for overshooting, we need to feed move_and_slide with
-        # a velocity that incorporates the frame duration. Simply compute
-        # via v = s / t.
-        var required_velocity = (delta.length() / delta_time)
-        required_velocity = clamp(required_velocity, -max_speed, max_speed)
+        handle_movement(target, delta_time)
+        handle_visibility(target, players[0])
 
-        delta = delta.normalized() * required_velocity
 
-        var actual_velocity = move_and_slide(delta)
+func handle_movement(target, delta_time):
+
+    var delta = target - position
+    
+    # Apply margin to target
+    target = target - delta.normalized() * melee_margin
+    delta = target - position
+    
+    # To account for overshooting, we need to feed move_and_slide with
+    # a velocity that incorporates the frame duration. Simply compute
+    # via v = s / t.
+    var required_velocity = (delta.length() / delta_time)
+    required_velocity = clamp(required_velocity, -max_speed, max_speed)
+
+    delta = delta.normalized() * required_velocity
+
+    var actual_velocity = move_and_slide(delta)
+
+
+func handle_visibility(target, player):
+    # Note this must only be called from _process_physics for space state access
+    var space_state = get_world_2d().direct_space_state
+    
+    var delta = target - position
+    var distance = delta.length()
+    
+    # TODO: incorporate player visibility here
+    if distance > 1000:
+        visible = false
+    else:
+        var radial_normal = Vector2(delta.y, -delta.x).normalized()
+        var test_points = [
+            position - radial_normal * enemy_radius * 0.9,
+            position,
+            position + radial_normal * enemy_radius * 0.9,
+        ]
+    
+        var result = null
+        for test_point in test_points:
+            result = space_state.intersect_ray(target, test_point)
+            # Weird somehow we need the result.size() > 0 check here...
+            if result != null and result.size() > 0 and result.rid == get_rid():
+                break
+
+        # print("target: ", target)
+        # print("enemy: ", position)
+        # print("hit_point: ", result.position)
+        # print("hit_point (local): ", to_local(result.position))
         
+        if result:
+            # print(result)
+            # print(get_rid(), " ", result.rid)
+            if result.rid == get_rid():
+                visible = true
+            else:
+                visible = false
+            
+            if debug_visibility:
+                debug_visibility_points = [
+                    to_local(result.position)
+                ]
+                # Note it is crucial to enforce a draw update, otherwise the debug
+                # drawing never updates...
+                update()
+        
+
+func _draw():
+    if debug_visibility:
+        for debug_point in debug_visibility_points:
+            draw_circle(debug_point, 30, Color(1, 0, 0))
+ 
 
 # Old implementation based on RigidBody2D        
 """

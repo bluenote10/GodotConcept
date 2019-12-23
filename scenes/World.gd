@@ -81,7 +81,7 @@ func generate_walls():
 
 
 func generate_enemies():
-    var num_enemies = 20
+    var num_enemies = 30
     
     for i in num_enemies:
         var enemy = load("res://scenes/Enemy.tscn").instance()

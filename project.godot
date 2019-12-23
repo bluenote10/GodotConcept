@@ -84,6 +84,10 @@ ui_wait={
  ]
 }
 
+[network]
+
+limits/debugger_stdout/max_chars_per_second=16000
+
 [rendering]
 
 environment/default_clear_color=Color( 0.133333, 0.133333, 0.133333, 1 )
