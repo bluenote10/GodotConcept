@@ -13,6 +13,7 @@ use rand::Rng;
 
 mod world_gen;
 mod converters;
+mod vec2;
 
 
 #[inherit(godot::Node)]

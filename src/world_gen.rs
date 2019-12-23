@@ -1,15 +1,15 @@
+use super::vec2::{Vec2};
 
 use rand::Rng;
 
-use clipping::CPolygon;
+//use clipping::CPolygon;
+
 use geo_booleanop::boolean::BooleanOp;
 use geo::{line_string, polygon};
 
 
-pub struct Vec2 {
-    x: f32,
-    y: f32,
-}
+pub type Polygon = geo::Polygon<f32>;
+pub type MultiPolygon = geo::MultiPolygon<f32>;
 
 
 pub struct Room {
@@ -47,15 +47,56 @@ pub fn generate_rooms(num_to_create: i32) -> Vec<Room> {
 }
 
 
+pub fn create_polygon_line_like(from: &Vec2, upto: &Vec2, width: f32) -> Polygon {
+    let delta = upto - from;
+    let normal = delta.perpendicular().normalized();
+
+    let poly = geo::Polygon::new(
+        geo::LineString(vec![
+            (from - &(&normal * width)).as_coordinate(),
+            (from + &(&normal * width)).as_coordinate(),
+            (upto + &(&normal * width)).as_coordinate(),
+            (upto - &(&normal * width)).as_coordinate(),
+        ]),
+        vec![],
+    );
+    poly
+}
+
+pub fn connect_rooms(rooms: &[Room]) -> MultiPolygon {
+    let mut hallways = geo::MultiPolygon::<f32>(vec![]);
+    for i in 0 .. rooms.len() {
+        let mut min_distance = std::f32::MAX;
+        let mut min_j = 0;
+        for j in i+1 .. rooms.len() {
+            let center_i = rooms[i].center();
+            let center_j = rooms[j].center();
+            let distance = ((center_i.x - center_j.x).powf(2.0) + (center_i.y - center_j.y).powf(2.0)).sqrt();
+            if distance < min_distance {
+                min_distance = distance;
+                min_j = j;
+            }
+        }
+        let center_i = rooms[i].center();
+        let center_j = rooms[min_j].center();
+        let poly = create_polygon_line_like(&center_i, &center_j, 30_f32);
+
+        hallways = hallways.union(&poly);
+    }
+    hallways
+}
+
+
 pub fn generate_floor() -> geo::MultiPolygon<f32> {
     godot_print!("Generating floor...");
 
     let rooms = generate_rooms(3);
+    let hallways = connect_rooms(&rooms);
 
     //let mut joined = CPolygon::new();
     //let mut joined = polygon![]; // geo::Polygon::new();
 
-    let mut joined = geo::MultiPolygon::<f32>(vec![]);
+    let mut joined = hallways; // geo::MultiPolygon::<f32>(vec![]);
 
     for room in rooms {
         let poly = polygon![
