@@ -1,4 +1,7 @@
-extends Node
+extends Node2D
+
+var WALL_TEXTURE = preload("res://textures/caster.png")
+
 
 func set_transform_rect(rect, p1, p2, width=1.0):
     var center = 0.5 * (p1 + p2)
@@ -28,19 +31,13 @@ func compute_transform(p1, p2, width=1.0):
     return transform
 
 
-func generate_wall(p1, p2, texture):
+func generate_wall(p1, p2):
     var transform = compute_transform(p1, p2)
     var delta = p2 - p1
     
     var wall = StaticBody2D.new() # Node2D.new()
     wall.transform = transform
     
-    # Add sprite
-    var rect = Sprite.new()
-    rect.texture = texture
-    rect.scale = Vector2(1 / texture.get_data().get_size().x, 10 / texture.get_data().get_size().y)
-    wall.add_child(rect)
-
     # Add light occulder
     var occluder_polygon = OccluderPolygon2D.new()
     occluder_polygon.polygon = PoolVector2Array([
@@ -62,12 +59,12 @@ func generate_wall(p1, p2, texture):
     wall.add_child(collider)
     
     wall.collision_layer = 1 | 2
+    wall.add_to_group("walls")
     
     return wall
     
     
-func generate_walls():
-    var texture = load("res://textures/caster.png")
+func generate_walls_random():
 
     var num_walls = 100
     
@@ -78,8 +75,21 @@ func generate_walls():
         #var p1 = Vector2(40, 30)
         #var p2 = Vector2(-100, 200)
 
-        var wall = generate_wall(p1, p2, texture)
+        var wall = generate_wall(p1, p2)
         add_child(wall)
+
+
+func generate_walls(world):
+    
+    for polygon in world:
+        var exterior = polygon[0]
+        var interior = polygon[1] # thats wrong actually...
+        
+        for i in exterior.size() - 1:
+            var p1 = exterior[i]
+            var p2 = exterior[i + 1]
+            var wall = generate_wall(p1, p2)
+            add_child(wall)
 
 
 func generate_enemies():
@@ -99,18 +109,26 @@ func _ready():
     var world = rust_world.get_world()
     print(world)
     
-    var texture = load("res://textures/caster.png")
-    
-    for polygon in world:
-        var exterior = polygon[0]
-        var interior = polygon[1] # thats wrong actually...
-        
-        for i in exterior.size() - 1:
-            var p1 = exterior[i]
-            var p2 = exterior[i + 1]
-            var wall = generate_wall(p1, p2, texture)
-            add_child(wall)
-            
-
-    #generate_walls()
+    generate_walls(world)
     generate_enemies()
+    
+    
+func _physics_process(delta):
+    var space_state = get_world_2d().direct_space_state
+
+    var player = $"../Player"
+
+    var walls = get_tree().get_nodes_in_group("walls")
+    for wall in walls:
+        var sprite = wall.get_node("Sprite")
+        if sprite:
+            continue
+
+        var test_point = wall.position
+        var result = space_state.intersect_ray(player.position, test_point, [], 2)
+        if result and result.rid == wall.get_rid():
+            var rect = Sprite.new()
+            rect.texture = WALL_TEXTURE
+            rect.scale = Vector2(1 / WALL_TEXTURE.get_data().get_size().x, 10 / WALL_TEXTURE.get_data().get_size().y)
+            rect.set_name("Sprite")
+            wall.add_child(rect)
