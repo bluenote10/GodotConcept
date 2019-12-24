@@ -11,6 +11,8 @@ const DAMAGE_POINT_SCENE = preload("res://scenes/DamagePoint.tscn")
 var DamagePointLauncher = load("res://scenes/DamagePointLauncher.gd")
 var damage_point_launcher: DamagePointLauncher = null
 
+var is_first_frame := true
+
 # Input variables accumulated in _input
 var mouse_delta := Vector2(0, 0)
 var attack_fired := false
@@ -142,8 +144,12 @@ func _physics_process(delta):
         if get_tree().paused == true:
             get_tree().paused = false
     else:
-        if get_tree().paused == false:
-            get_tree().paused = true
+        if is_first_frame:
+            # Current work-around to give the enemies one frame to update their visibility.
+            is_first_frame = false
+        else:
+            if get_tree().paused == false:
+                get_tree().paused = true
     
     # Handle accumulated mouse delta
     # Note: Input.get_last_mouse_speed() returns really weird results here...
