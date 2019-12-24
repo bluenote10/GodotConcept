@@ -112,8 +112,8 @@ impl Vec2 {
 
     pub fn mid(&self, that: &Vec2) -> Vec2 {
         Vec2 {
-            x: 0.5f32 * (self.x + that.x),
-            y: 0.5f32 * (self.y + that.y),
+            x: 0.5 * (self.x + that.x),
+            y: 0.5 * (self.y + that.y),
         }
     }
 

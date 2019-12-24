@@ -23,8 +23,8 @@ impl Room {
 
     pub fn center(&self) -> Vec2 {
         Vec2 {
-            x: (self.x_from + self.x_upto) / 2f32,
-            y: (self.y_from + self.y_upto) / 2f32,
+            x: (self.x_from + self.x_upto) / 2.,
+            y: (self.y_from + self.y_upto) / 2.,
         }
     }
 }
@@ -33,10 +33,10 @@ impl Room {
 pub fn generate_rooms(num_to_create: i32) -> Vec<Room> {
     (0 .. num_to_create).map(|_| {
         let mut rng = rand::thread_rng();
-        let x = rng.gen_range(-1000_f32, 1000_f32);
-        let y = rng.gen_range(-1000_f32, 1000_f32);
-        let w = rng.gen_range(100_f32, 500_f32);
-        let h = rng.gen_range(100_f32, 500_f32);
+        let x = rng.gen_range(-1000., 1000.);
+        let y = rng.gen_range(-1000., 1000.);
+        let w = rng.gen_range(100., 500.);
+        let h = rng.gen_range(100., 500.);
         Room {
             x_from: x - w,
             x_upto: w + x,
@@ -79,7 +79,7 @@ pub fn connect_rooms(rooms: &[Room]) -> MultiPolygon {
         }
         let center_i = rooms[i].center();
         let center_j = rooms[min_j].center();
-        let poly = create_polygon_line_like(&center_i, &center_j, 30_f32);
+        let poly = create_polygon_line_like(&center_i, &center_j, 30.);
 
         hallways = hallways.union(&poly);
     }
