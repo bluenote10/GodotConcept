@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://textures/test/100_1453_seamless.jpg" type="Texture" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+texture = ExtResource( 1 )
+texture_scale = Vector2( 10, 10 )
+polygon = PoolVector2Array( 53.8699, 50.5596, 257.922, 34.6594, 393.074, 172.461, 189.021, 153.911, 279.123, 323.513, 40.6198, 273.162 )
+
+[node name="100_1453_seamless" type="Sprite" parent="."]
+position = Vector2( 649.09, 234.289 )
+scale = Vector2( 0.277045, 0.277045 )
+texture = ExtResource( 1 )
