@@ -1,14 +1,18 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/Main.gd" type="Script" id=1]
-[ext_resource path="res://scenes/Player.gd" type="Script" id=2]
-[ext_resource path="res://textures/character_at.png" type="Texture" id=3]
-[ext_resource path="res://resources/Mono50.tres" type="DynamicFont" id=4]
-[ext_resource path="res://textures/light.png" type="Texture" id=5]
-[ext_resource path="res://scenes/World.gd" type="Script" id=6]
-[ext_resource path="res://textures/caster.png" type="Texture" id=7]
-[ext_resource path="res://textures/character.png" type="Texture" id=8]
-[ext_resource path="res://scenes/RustWorld.gdns" type="Script" id=9]
+[ext_resource path="res://textures/test/100_1453_seamless.jpg" type="Texture" id=2]
+[ext_resource path="res://scenes/Player.gd" type="Script" id=3]
+[ext_resource path="res://textures/character_at.png" type="Texture" id=4]
+[ext_resource path="res://resources/Mono50.tres" type="DynamicFont" id=5]
+[ext_resource path="res://textures/light.png" type="Texture" id=6]
+[ext_resource path="res://scenes/World.gd" type="Script" id=7]
+[ext_resource path="res://textures/caster.png" type="Texture" id=8]
+[ext_resource path="res://textures/character.png" type="Texture" id=9]
+[ext_resource path="res://scenes/RustWorld.gdns" type="Script" id=10]
+
+[sub_resource type="CanvasItemMaterial" id=7]
+light_mode = 2
 
 [sub_resource type="CanvasItemMaterial" id=1]
 light_mode = 2
@@ -56,15 +60,21 @@ size_flags_vertical = 1
 text = "PAUSED"
 align = 2
 
+[node name="FloorTexture" type="Sprite" parent="."]
+material = SubResource( 7 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 2 )
+
 [node name="Player" type="RigidBody2D" parent="." groups=[
 "player",
 ]]
 mode = 2
 gravity_scale = 0.0
 can_sleep = false
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="FloorRect" type="ColorRect" parent="Player"]
+visible = false
 material = SubResource( 1 )
 margin_left = -1000.0
 margin_top = -1000.0
@@ -81,7 +91,7 @@ texture_mode = 3080292
 [node name="Sprite" type="Sprite" parent="Player"]
 light_mask = 2
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 
 [node name="Label" type="Label" parent="Player/Sprite"]
 visible = false
@@ -91,7 +101,7 @@ margin_left = -32.0
 margin_top = -34.0
 margin_right = -32.0
 margin_bottom = -31.0
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "@"
 align = 1
@@ -112,14 +122,14 @@ drag_margin_right = 0.0
 drag_margin_bottom = 0.0
 
 [node name="Light2D" type="Light2D" parent="Player"]
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 color = Color( 0.662745, 0.772549, 1, 1 )
 shadow_enabled = true
 shadow_filter = 5
 
 [node name="World" type="Node2D" parent="."]
 pause_mode = 1
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
 [node name="ColorRect7" type="ColorRect" parent="World"]
 margin_left = -132.709
@@ -156,28 +166,28 @@ occluder = SubResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="World"]
 position = Vector2( 116.883, -114.369 )
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite"]
 occluder = SubResource( 4 )
 
 [node name="Sprite2" type="Sprite" parent="World"]
 position = Vector2( 95.8834, 59.6308 )
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite2"]
 occluder = SubResource( 4 )
 
 [node name="Sprite3" type="Sprite" parent="World"]
 position = Vector2( -171.116, -68.3691 )
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite3"]
 occluder = SubResource( 4 )
 
 [node name="Sprite4" type="Sprite" parent="World"]
 position = Vector2( 14.9827, 184.932 )
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite4"]
 occluder = SubResource( 4 )
@@ -196,10 +206,10 @@ margin_left = -32.0
 margin_top = -32.0
 margin_right = 32.0
 margin_bottom = 32.0
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/RigidBody2D"]
 shape = SubResource( 6 )
 
 [node name="RustWorld" type="Node" parent="."]
-script = ExtResource( 9 )
+script = ExtResource( 10 )

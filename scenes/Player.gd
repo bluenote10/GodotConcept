@@ -30,8 +30,8 @@ func set_camera(camera, zoom):
     # Adjust floor to always cover visible area
     # Note: In y-direction, we don't account for the exact y position of the player,
     # just use twice the y resultion, which should always be enough.
-    $FloorRect.rect_position = Vector2(-screen_size.x / 2 * zoom, -screen_size.y * zoom)
-    $FloorRect.rect_size = Vector2(screen_size.x * zoom, screen_size.y * 2 * zoom)
+    #$FloorRect.rect_position = Vector2(-screen_size.x / 2 * zoom, -screen_size.y * zoom)
+    #$FloorRect.rect_size = Vector2(screen_size.x * zoom, screen_size.y * 2 * zoom)
 
 
 func _ready():
