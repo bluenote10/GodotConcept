@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://fragment.shader" type="Shader" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://icon.gd" type="Script" id=3]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 1 )
+shader_param/global_transform = Transform2D( 2.58461, 0, 0, 1.79982, 174.015, 460.192 )
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 1 )
+shader_param/global_transform = Transform2D( 15.8898, 0, 0, 8.63595, 112.352, 50.5745 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 1 )
+shader_param/global_transform = Transform2D( 2.58461, 0, 0, 1.79982, 790.644, 113.706 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="icon2" type="Sprite" parent="."]
+material = SubResource( 2 )
+position = Vector2( 174.015, 460.192 )
+scale = Vector2( 2.58461, 1.79982 )
+texture = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="icon4" type="Sprite" parent="."]
+material = SubResource( 4 )
+position = Vector2( 112.352, 50.5745 )
+scale = Vector2( 15.8898, 8.63595 )
+texture = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="icon3" type="Sprite" parent="."]
+material = SubResource( 3 )
+position = Vector2( 790.644, 113.706 )
+scale = Vector2( 2.58461, 1.79982 )
+texture = ExtResource( 2 )
+script = ExtResource( 3 )
