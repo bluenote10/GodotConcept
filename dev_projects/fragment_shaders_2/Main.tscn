@@ -4,48 +4,48 @@
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://icon.gd" type="Script" id=3]
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = ExtResource( 1 )
-shader_param/global_transform = Transform2D( 10.772, 0, 0, 7.90022, 167.267, 563.972 )
-
-[sub_resource type="ShaderMaterial" id=4]
-shader = ExtResource( 1 )
-shader_param/global_transform = Transform2D( 13.3748, 0, 0, 7.40517, 92.5668, -46.3701 )
-
 [sub_resource type="ShaderMaterial" id=5]
 shader = ExtResource( 1 )
-shader_param/global_transform = Transform2D( 10.772, 0, 0, 9.23803, 974.36, -8.91002 )
+shader_param/global_transform = Transform2D( 10.772, 0, 0, 9.23803, 881.313, 48.4846 )
 
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=6]
 shader = ExtResource( 1 )
-shader_param/global_transform = Transform2D( 10.772, 0, 0, 9.23803, 885.863, 645.106 )
+shader_param/global_transform = Transform2D( 10.772, 0, 0, 9.23803, 56.2052, 30.8666 )
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = ExtResource( 1 )
+shader_param/global_transform = Transform2D( 10.772, 0, 0, 9.23803, 41.5236, 688.604 )
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = ExtResource( 1 )
+shader_param/global_transform = Transform2D( 10.772, 0, 0, 9.23803, 866.631, 682.731 )
 
 [node name="Node2D" type="Node2D"]
 
-[node name="icon2" type="Sprite" parent="."]
-material = SubResource( 2 )
-position = Vector2( 167.267, 563.972 )
-scale = Vector2( 10.772, 7.90022 )
+[node name="icon3" type="Sprite" parent="."]
+material = SubResource( 5 )
+position = Vector2( 881.313, 48.4846 )
+scale = Vector2( 10.772, 9.23803 )
 texture = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="icon4" type="Sprite" parent="."]
-material = SubResource( 4 )
-position = Vector2( 92.5668, -46.3701 )
-scale = Vector2( 13.3748, 7.40517 )
-texture = ExtResource( 2 )
-script = ExtResource( 3 )
-
-[node name="icon3" type="Sprite" parent="."]
-material = SubResource( 5 )
-position = Vector2( 974.36, -8.91002 )
+material = SubResource( 6 )
+position = Vector2( 56.2052, 30.8666 )
 scale = Vector2( 10.772, 9.23803 )
 texture = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="icon5" type="Sprite" parent="."]
-material = SubResource( 3 )
-position = Vector2( 885.863, 645.106 )
+material = SubResource( 7 )
+position = Vector2( 41.5236, 688.604 )
+scale = Vector2( 10.772, 9.23803 )
+texture = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="icon6" type="Sprite" parent="."]
+material = SubResource( 8 )
+position = Vector2( 866.631, 682.731 )
 scale = Vector2( 10.772, 9.23803 )
 texture = ExtResource( 2 )
 script = ExtResource( 3 )
