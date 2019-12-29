@@ -3,15 +3,14 @@ extends Node2D
 var WALL_TEXTURE = preload("res://textures/caster.png")
 
 
-func set_transform_rect(rect, p1, p2, width=1.0):
+func __set_transform_rect(rect, p1, p2, width=1.0):
     var center = 0.5 * (p1 + p2)
     var delta = p2 - p1
     var rotation = atan2(delta.x, delta.y)
     
-    var tansform = Transform2D()
     # Subtract half a pixel ensures that the texture aligns with physical pixels
     rect.rect_position = center
-    #rect.rect_rotation = rotation
+    rect.rect_rotation = rotation
     rect.rect_size = Vector2(width, delta.length())
     
     rect.anchor_left = 0.5
@@ -33,12 +32,11 @@ func compute_transform(p1, p2, width=1.0):
 
 func generate_wall(p1, p2):
     var transform = compute_transform(p1, p2)
-    var delta = p2 - p1
     
     var wall = StaticBody2D.new() # Node2D.new()
     wall.transform = transform
     
-    # Add light occulder
+    # Add light occluder
     var occluder_polygon = OccluderPolygon2D.new()
     occluder_polygon.polygon = PoolVector2Array([
         Vector2(-0.5, -1),
@@ -61,6 +59,25 @@ func generate_wall(p1, p2):
     wall.collision_layer = 1 | 2
     wall.add_to_group("walls")
     
+    return wall
+
+
+func generate_wall_shadow_world(p1, p2):
+    var transform = compute_transform(p1, p2)
+    
+    var wall = LightOccluder2D.new()
+    wall.transform = transform
+    
+    # Add light occluder
+    var occluder_polygon = OccluderPolygon2D.new()
+    occluder_polygon.polygon = PoolVector2Array([
+        Vector2(-0.5, -1),
+        Vector2(+0.5, -1),
+        Vector2(+0.5, +1),
+        Vector2(-0.5, +1)])
+    
+    wall.occluder = occluder_polygon
+
     return wall
     
     
@@ -91,6 +108,9 @@ func generate_walls(world):
             var wall = generate_wall(p1, p2)
             add_child(wall)
 
+            var wall_shadow = generate_wall_shadow_world(p1, p2)
+            $ShadowWorldViewport.add_child(wall_shadow)
+
 
 func generate_enemies():
     var num_enemies = 30
@@ -112,16 +132,29 @@ func _ready():
     generate_walls(world)
     generate_enemies()
     
+    var test_rect = ColorRect.new()
+    test_rect.color = Color(1, 0, 0)
+    test_rect.rect_size = Vector2(100, 100)
     
-func _physics_process(delta):
+    var debug1 = load("res://scenes/DebugNode2D.tscn").instance()
+    debug1.position = Vector2(1024, 1024)
+    #debug1.position = Vector2(512, 512)
+    #debug1.position = Vector2(0, 0)
+    debug1.scale = Vector2(10, 10)
+    $ShadowWorldViewport.add_child(debug1)
+    
+    
+func _physics_process(_delta):
     var space_state = get_world_2d().direct_space_state
 
     var player = $"../Player"
+    
+    $ShadowWorldViewport/Light2D.position = player.position
+    # $ShadowWorldViewport.get_texture().get_data().save_png("shadows.png")
 
     var walls = get_tree().get_nodes_in_group("walls")
     for wall in walls:
-        var sprite = wall.get_node("Sprite")
-        if sprite:
+        if wall.has_node("Sprite"):
             continue
 
         var test_point = wall.position

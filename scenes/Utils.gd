@@ -2,7 +2,7 @@ extends Node
 class_name Utils
 
 
-static func render_scene_to_texture(node, viewport_size, node_position, scale, scene_path):
+static func render_scene_to_texture(node, viewport_size, node_position, scale, _scene_path):
     # Create viewport
     var viewport = Viewport.new()
     viewport.size = viewport_size

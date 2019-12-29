@@ -22,7 +22,7 @@ func launch_damage_points(t1, t2):
     print(alpha_from, " ", alpha_upto, " ", alpha_upto - alpha_from)
     
     var num_points_ang = 5
-    var num_points_rad = 3
+    var _num_points_rad = 3
 
     var alphas = Utils.linspace(alpha_from, alpha_upto, num_points_ang)
     var radiuses = Utils.linspace(30, 50, 3)

@@ -1,20 +1,20 @@
 extends Node2D
 
-func draw_circle_line_arc(center, radius, angle_from, angle_to, color, width=1.0):
+func draw_circle_line_arc(center, r, angle_from, angle_to, color, width=1.0):
     var nb_points = 32
     var points_arc = PoolVector2Array()
 
     for i in range(nb_points + 1):
         var angle_point = deg2rad(angle_from + i * (angle_to-angle_from) / nb_points - 90)
-        points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius)
+        points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * r)
 
     for index_point in range(nb_points):
         #draw_line(points_arc[index_point], points_arc[index_point + 1], color, true)
         draw_line_antialiased(points_arc[index_point], points_arc[index_point + 1], color, width)
 
 
-func draw_circle_line(center, radius, color, width=1.0):
-    draw_circle_line_arc(center, radius, 0, 360, color, width)
+func draw_circle_line(center, r, color, width=1.0):
+    draw_circle_line_arc(center, r, 0, 360, color, width)
      
     
 func draw_line_antialiased(p1, p2, color=Color(1.0, 1.0, 1.0, 1.0), width=1.0):

@@ -25,7 +25,7 @@ func set_camera(camera, zoom):
     camera.position.y = - zoom * camera_offset
 
     # TODO: probably this logic need to re-run after resizing?
-    var screen_size = get_viewport_rect().size
+    var _screen_size = get_viewport_rect().size
     
     # Adjust floor to always cover visible area
     # Note: In y-direction, we don't account for the exact y position of the player,
@@ -187,7 +187,7 @@ func fire_melee_attack_animation():
     weapon_animation.connect("animation_finished", self, "weapon_anim_finished", [weapon])
     
     
-func weapon_anim_finished(anim_name, weapon_node):
+func weapon_anim_finished(_anim_name, weapon_node):
     weapon_node.queue_free()
     
     

@@ -55,10 +55,10 @@ func handle_movement(target, delta_time):
 
     delta = delta.normalized() * required_velocity
 
-    var actual_velocity = move_and_slide(delta)
+    var _actual_velocity = move_and_slide(delta)
 
 
-func handle_visibility(target, player):
+func handle_visibility(target, _player):
     # Note this must only be called from _process_physics for space state access
     var space_state = get_world_2d().direct_space_state
     
