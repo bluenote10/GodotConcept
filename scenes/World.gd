@@ -137,9 +137,9 @@ func _ready():
     test_rect.rect_size = Vector2(100, 100)
     
     var debug1 = load("res://scenes/DebugNode2D.tscn").instance()
-    debug1.position = Vector2(1024, 1024)
+    #debug1.position = Vector2(1024, 1024)
     #debug1.position = Vector2(512, 512)
-    #debug1.position = Vector2(0, 0)
+    debug1.position = Vector2(0, 0)
     debug1.scale = Vector2(10, 10)
     $ShadowWorldViewport.add_child(debug1)
     
