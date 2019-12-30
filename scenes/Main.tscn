@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://textures/test/100_1453_seamless.jpg" type="Texture" id=2]
@@ -17,8 +17,45 @@ viewport_path = NodePath("World/ShadowWorldViewport")
 [sub_resource type="ViewportTexture" id=2]
 viewport_path = NodePath("World/AccumWorldViewport")
 
-[sub_resource type="CanvasItemMaterial" id=3]
-light_mode = 2
+[sub_resource type="Shader" id=15]
+code = "shader_type canvas_item;
+//render_mode blend_mix;
+
+uniform sampler2D cur_visibility;
+uniform sampler2D all_visibility;
+
+void fragment() {
+    if (AT_LIGHT_PASS) {
+        // Lighted area: Here we have to lookup the fragment in the cur_visibility to
+        // determine if we should output a normal texture value or pure black of the
+        // fragment is not visibile from the player. Since the light mode is set to
+        // \"additive\" and the fragment simply keeps its color that it got from the
+        // background pass (either pure black or darkend texture).
+        COLOR = vec4(texture(TEXTURE, UV).rgb, 1.0);
+        // if (not_visible) COLOR = vec4(0, 0, 0, 1);
+    }
+    else {
+        // Non-lighted area: Here we have to lookup the fragment in all_visibility to
+        // determine if we either output a (darkened) texture value or pure black
+        // for undiscovered areas.
+        COLOR = vec4(texture(TEXTURE, UV).rgb, 1.0);
+        COLOR = mix(COLOR, vec4(0.0, 0.0, 0.0, 1.0), 0.95);
+        // if (undiscovered) COLOR = vec4(0, 0, 0, 1);
+    }
+}
+"
+
+[sub_resource type="ViewportTexture" id=17]
+viewport_path = NodePath("World/AccumWorldViewport")
+
+[sub_resource type="ViewportTexture" id=18]
+viewport_path = NodePath("World/ShadowWorldViewport")
+
+[sub_resource type="ShaderMaterial" id=16]
+resource_local_to_scene = true
+shader = SubResource( 15 )
+shader_param/cur_visibility = SubResource( 18 )
+shader_param/all_visibility = SubResource( 17 )
 
 [sub_resource type="CanvasItemMaterial" id=4]
 light_mode = 2
@@ -66,28 +103,17 @@ shader = SubResource( 13 )
 code = "shader_type canvas_item;
 
 void fragment() {
-    vec4 c = texture(TEXTURE, UV);
-    float c_r = clamp(c.r, 0.0, 1.0);
-    bool is_visible = false;
-    if (c_r < 0.4) {
-        //COLOR = vec4(0, 0, 0, 1);
-    } else {
-        //COLOR = vec4(1, 1, 1, 1);
-        is_visible = true;
-    }
+    vec4 current = texture(TEXTURE, UV);
+    bool current_is_visible = (current.r > 0.5 ? true : false);
     
     vec4 existing = textureLod(SCREEN_TEXTURE, SCREEN_UV, 0);
-    bool already_visible = (existing.r > 0.5 ? true : false);
+    bool existing_is_visible = (existing.r > 0.5 ? true : false);
     
-    if (is_visible || already_visible) {
+    if (current_is_visible || existing_is_visible) {
         COLOR = vec4(1, 1, 1, 1);
     } else {
         COLOR = vec4(0, 0, 0, 1);
     }
-    
-    //COLOR = mix(existing, vec4(1, 1, 1, 1), 0.1);
-    //COLOR = existing;
-    //COLOR = vec4(c.r, 0, 0, 1);
 }"
 
 [sub_resource type="ShaderMaterial" id=11]
@@ -139,7 +165,7 @@ rect_scale = Vector2( 0.1, 0.1 )
 texture = SubResource( 2 )
 
 [node name="FloorTexture" type="Sprite" parent="."]
-material = SubResource( 3 )
+material = SubResource( 16 )
 scale = Vector2( 10, 10 )
 texture = ExtResource( 2 )
 
