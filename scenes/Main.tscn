@@ -1,15 +1,16 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://textures/test/100_1453_seamless.jpg" type="Texture" id=2]
-[ext_resource path="res://scenes/Player.gd" type="Script" id=3]
-[ext_resource path="res://textures/character_at.png" type="Texture" id=4]
-[ext_resource path="res://resources/Mono50.tres" type="DynamicFont" id=5]
-[ext_resource path="res://textures/light.png" type="Texture" id=6]
-[ext_resource path="res://scenes/World.gd" type="Script" id=7]
-[ext_resource path="res://textures/caster.png" type="Texture" id=8]
-[ext_resource path="res://textures/character.png" type="Texture" id=9]
-[ext_resource path="res://scenes/RustWorld.gdns" type="Script" id=10]
+[ext_resource path="res://scenes/FloorTexture.gd" type="Script" id=3]
+[ext_resource path="res://scenes/Player.gd" type="Script" id=4]
+[ext_resource path="res://textures/character_at.png" type="Texture" id=5]
+[ext_resource path="res://resources/Mono50.tres" type="DynamicFont" id=6]
+[ext_resource path="res://textures/light.png" type="Texture" id=7]
+[ext_resource path="res://scenes/World.gd" type="Script" id=8]
+[ext_resource path="res://textures/caster.png" type="Texture" id=9]
+[ext_resource path="res://textures/character.png" type="Texture" id=10]
+[ext_resource path="res://scenes/RustWorld.gdns" type="Script" id=11]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("World/ShadowWorldViewport")
@@ -21,10 +22,23 @@ viewport_path = NodePath("World/AccumWorldViewport")
 code = "shader_type canvas_item;
 //render_mode blend_mix;
 
+uniform mat4 global_transform;
+
 uniform sampler2D cur_visibility;
 uniform sampler2D all_visibility;
 
+varying vec2 world_pos;
+varying vec2 visibility_uv;
+
+void vertex() {
+    world_pos = (global_transform * vec4(VERTEX, 0.0, 1.0)).xy;
+    visibility_uv = vec2(0.5, 0.5) + world_pos / 2048.0;
+}
+
 void fragment() {
+    bool cur_is_visible = texture(cur_visibility, visibility_uv).r > 0.5 ? true : false;
+    bool all_is_visible = texture(all_visibility, visibility_uv).r > 0.5 ? true : false;
+    
     if (AT_LIGHT_PASS) {
         // Lighted area: Here we have to lookup the fragment in the cur_visibility to
         // determine if we should output a normal texture value or pure black of the
@@ -40,8 +54,16 @@ void fragment() {
         // for undiscovered areas.
         COLOR = vec4(texture(TEXTURE, UV).rgb, 1.0);
         COLOR = mix(COLOR, vec4(0.0, 0.0, 0.0, 1.0), 0.95);
-        // if (undiscovered) COLOR = vec4(0, 0, 0, 1);
+        if (!all_is_visible) {
+            COLOR = vec4(0.02, 0.02, 0.02, 1);
+        }
     }
+    
+    //float d = distance(world_pos, vec2(0, 0));
+    //float v = 1.0 - (d / 500.0);
+    //COLOR = vec4(v, v, v, 1.0);
+    
+    //COLOR = vec4(texture(all_visibility, visibility_uv).rgb, 1.0);
 }
 "
 
@@ -54,6 +76,7 @@ viewport_path = NodePath("World/ShadowWorldViewport")
 [sub_resource type="ShaderMaterial" id=16]
 resource_local_to_scene = true
 shader = SubResource( 15 )
+shader_param/global_transform = null
 shader_param/cur_visibility = SubResource( 18 )
 shader_param/all_visibility = SubResource( 17 )
 
@@ -168,6 +191,7 @@ texture = SubResource( 2 )
 material = SubResource( 16 )
 scale = Vector2( 10, 10 )
 texture = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="Player" type="RigidBody2D" parent="." groups=[
 "player",
@@ -175,7 +199,7 @@ texture = ExtResource( 2 )
 mode = 2
 gravity_scale = 0.0
 can_sleep = false
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="FloorRect" type="ColorRect" parent="Player"]
 visible = false
@@ -195,7 +219,7 @@ texture_mode = 3080292
 [node name="Sprite" type="Sprite" parent="Player"]
 light_mask = 2
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 
 [node name="Label" type="Label" parent="Player/Sprite"]
 visible = false
@@ -205,7 +229,7 @@ margin_left = -32.0
 margin_top = -34.0
 margin_right = -32.0
 margin_bottom = -31.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "@"
 align = 1
@@ -226,7 +250,7 @@ drag_margin_right = 0.0
 drag_margin_bottom = 0.0
 
 [node name="Light2D" type="Light2D" parent="Player"]
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 color = Color( 0.662745, 0.772549, 1, 1 )
 shadow_enabled = true
 shadow_filter = 5
@@ -234,7 +258,7 @@ shadow_item_cull_mask = 3
 
 [node name="World" type="Node2D" parent="."]
 pause_mode = 1
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 
 [node name="ColorRect7" type="ColorRect" parent="World"]
 margin_left = -132.709
@@ -271,28 +295,28 @@ occluder = SubResource( 6 )
 
 [node name="Sprite" type="Sprite" parent="World"]
 position = Vector2( 116.883, -114.369 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite"]
 occluder = SubResource( 7 )
 
 [node name="Sprite2" type="Sprite" parent="World"]
 position = Vector2( 95.8834, 59.6308 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite2"]
 occluder = SubResource( 7 )
 
 [node name="Sprite3" type="Sprite" parent="World"]
 position = Vector2( -171.116, -68.3691 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite3"]
 occluder = SubResource( 7 )
 
 [node name="Sprite4" type="Sprite" parent="World"]
 position = Vector2( 14.9827, 184.932 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Sprite4"]
 occluder = SubResource( 7 )
@@ -311,7 +335,7 @@ margin_left = -32.0
 margin_top = -32.0
 margin_right = 32.0
 margin_bottom = 32.0
-texture = ExtResource( 9 )
+texture = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/RigidBody2D"]
 shape = SubResource( 9 )
@@ -321,7 +345,7 @@ size = Vector2( 1024, 1024 )
 render_target_update_mode = 3
 
 [node name="Light2D" type="Light2D" parent="World/ShadowWorldViewport"]
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 shadow_enabled = true
 
 [node name="ColorRect" type="ColorRect" parent="World/ShadowWorldViewport"]
@@ -346,4 +370,4 @@ position = Vector2( 512, 512 )
 texture = SubResource( 12 )
 
 [node name="RustWorld" type="Node" parent="."]
-script = ExtResource( 10 )
+script = ExtResource( 11 )
