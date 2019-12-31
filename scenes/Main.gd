@@ -18,6 +18,10 @@ func _input(event):
                 get_tree().paused = true
             else:
                 Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+        if event.scancode == KEY_F12 and not event.echo:
+            $World/AccumWorldViewport.get_texture().get_data().save_png("all_visibility.png")
+            $World/ShadowWorldViewport.get_texture().get_data().save_png("cur_visibility.png")
+            print("Saved visibility")
 
 
 func _process(delta):
