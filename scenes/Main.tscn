@@ -68,6 +68,21 @@ void fragment() {
     
     //COLOR = vec4(texture(all_visibility, visibility_uv).rgb, 1.0);
 }
+
+float rand(vec2 co) {
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+void light() {
+    // light flickering effect
+    float flicker = (sin(TIME * 0.1) + sin(TIME * 10.0) + sin(TIME * 33.0)) / 3.0 * 0.02 + 0.98;
+    LIGHT *= flicker;
+    
+    // TODO: What would be the best way to identify light sources?
+    // One possibility: if (LIGHT_COLOR.r > LIGHT_COLOR.b) LIGHT *= 0.0;
+    // LIGHT_VEC, LIGHT_HEIGHT, LIGHT_COLOR are inout => we could pass information and restore the intended values?
+    // Why is SHADOW_COLOR out and not inout, it's a parameter in the GUI as well...
+}
 "
 
 [sub_resource type="ViewportTexture" id=4]

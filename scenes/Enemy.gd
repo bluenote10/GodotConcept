@@ -19,7 +19,7 @@ func _ready():
     scale = Vector2(scale_fraction, scale_fraction)
 
     # Start invisible -- visibility is handled in _process_physics
-    visible = false
+    _set_visible(false)
 
 
 func _physics_process(delta_time):
@@ -67,7 +67,7 @@ func handle_visibility(target, _player):
     
     # TODO: incorporate player visibility here
     if distance > 1000:
-        visible = false
+        _set_visible(false)
     else:
         var radial_normal = Vector2(delta.y, -delta.x).normalized()
         var test_points = [
@@ -101,9 +101,9 @@ func handle_visibility(target, _player):
             # print(result)
             # print(get_rid(), " ", result.rid)
             if result.rid == get_rid():
-                visible = true
+                _set_visible(true)
             else:
-                visible = false
+                _set_visible(false)
             
             if debug_visibility:
                 debug_visibility_points = [
@@ -113,8 +113,12 @@ func handle_visibility(target, _player):
                 # drawing never updates...
                 update()
         else:
-            visible = false
-        
+            _set_visible(false)
+    
+      
+func _set_visible(value):
+    $Sprite.visible = value
+      
 
 func _draw():
     if debug_visibility:
