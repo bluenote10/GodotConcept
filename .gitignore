@@ -16,4 +16,5 @@ export_presets.cfg
 /Cargo.lock
 
 # Debugging files
-test*.png*
+/test*.png*
+/*visibility.png*
