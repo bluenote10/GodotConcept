@@ -147,6 +147,7 @@ func _physics_process(_delta):
     var player = $"../Player"
     
     $ShadowWorldViewport/Light2D.position = player.position
+    $ShadowWorldViewport/Light2D.rotation = player.rotation
     # $ShadowWorldViewport.get_texture().get_data().save_png("shadows.png")
 
     var walls = get_tree().get_nodes_in_group("walls")

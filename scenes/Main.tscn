@@ -129,8 +129,19 @@ void fragment() {
 }
 
 void light() {
+    // Probably we need to differentiate here between direct visibility (front) and
+    // indirect visiblity (back).
+    // The ground floor discovery should only use direct visibility, thus the all_visibility
+    // should only build on that.
+    // The lighting visibility should extend to the back to avoid abrubt/non-physical
+    // jumps in the immedate player surroundings. Hm, but if we draw enemy lights in
+    // the \"back area\" it is totally obvious where enemies are. Maybe that's okay, because
+    // not a lot of enemies will carry lights (really?) and it is not unrealistic that
+    // enemies carrying a light source are easy to spot even if out of sight.
+    // We could also apply the \"avoid non-physical cutoff\" rule only to the player
+    // light -- and enemy lights only blend in the direct visibility area...
     float d = distance(LIGHT_UV, vec2(0.5, 0.5));
-    if (d < 0.5) {
+    if (d < 0.5) { //  && LIGHT_UV.y < 0.5
         LIGHT = vec4(1, 1, 1, 1);
     } else {
         LIGHT = vec4(0, 0, 0, 1);
