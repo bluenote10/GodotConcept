@@ -132,17 +132,14 @@ func _ready():
     generate_walls(world)
     generate_enemies()
     
-    var test_rect = ColorRect.new()
-    test_rect.color = Color(1, 0, 0)
-    test_rect.rect_size = Vector2(100, 100)
-    
-    var debug1 = load("res://scenes/DebugNode2D.tscn").instance()
-    #debug1.position = Vector2(1024, 1024)
-    #debug1.position = Vector2(512, 512)
-    debug1.position = Vector2(0, 0)
-    debug1.scale = Vector2(10, 10)
-    $ShadowWorldViewport.add_child(debug1)
-    
+    if false:    
+        var debug1 = load("res://scenes/DebugNode2D.tscn").instance()
+        #debug1.position = Vector2(1024, 1024)
+        #debug1.position = Vector2(512, 512)
+        debug1.position = Vector2(0, 0)
+        debug1.scale = Vector2(10, 10)
+        $ShadowWorldViewport.add_child(debug1)
+            
     
 func _physics_process(_delta):
     var space_state = get_world_2d().direct_space_state

@@ -45,8 +45,11 @@ void fragment() {
         // fragment is not visibile from the player. Since the light mode is set to
         // \"additive\" and the fragment simply keeps its color that it got from the
         // background pass (either pure black or darkend texture).
-        COLOR = vec4(texture(TEXTURE, UV).rgb, 1.0);
-        // if (not_visible) COLOR = vec4(0, 0, 0, 1);
+        if (cur_is_visible) {
+            COLOR = vec4(texture(TEXTURE, UV).rgb, 1.0);
+        } else {
+            COLOR = vec4(0, 0, 0, 1);
+        }
     }
     else {
         // Non-lighted area: Here we have to lookup the fragment in all_visibility to
@@ -174,10 +177,10 @@ text = "PAUSED"
 align = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
-margin_top = 200.0
+margin_top = 100.0
 margin_right = 1024.0
-margin_bottom = 1224.0
-rect_scale = Vector2( 0.1, -0.1 )
+margin_bottom = 1124.0
+rect_scale = Vector2( 0.1, 0.1 )
 texture = SubResource( 1 )
 
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
@@ -342,6 +345,7 @@ shape = SubResource( 12 )
 
 [node name="ShadowWorldViewport" type="Viewport" parent="World"]
 size = Vector2( 1024, 1024 )
+render_target_v_flip = true
 render_target_update_mode = 3
 
 [node name="Light2D" type="Light2D" parent="World/ShadowWorldViewport"]
@@ -362,6 +366,7 @@ zoom = Vector2( 2, 2 )
 
 [node name="AccumWorldViewport" type="Viewport" parent="World"]
 size = Vector2( 1024, 1024 )
+render_target_v_flip = true
 render_target_clear_mode = 2
 
 [node name="Sprite" type="Sprite" parent="World/AccumWorldViewport"]
