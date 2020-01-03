@@ -109,7 +109,7 @@ pub fn generate_floor() -> geo::MultiPolygon<f32> {
         joined = joined.union(&poly);
     }
 
-    godot_print!("Joined: {:?}", joined);
+    // godot_print!("Joined: {:?}", joined);
     joined
 
     /*

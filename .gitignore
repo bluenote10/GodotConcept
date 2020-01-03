@@ -18,3 +18,4 @@ export_presets.cfg
 # Debugging files
 /test*.png*
 /*visibility.png*
+/world.json

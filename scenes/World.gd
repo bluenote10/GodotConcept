@@ -100,8 +100,8 @@ func generate_walls(world):
     
     print("World has %d polygons" % world.size())
     for polygon in world:
-        var exterior = polygon[0]
-        var interiors = polygon[1]
+        var exterior = polygon.exterior
+        var interiors = polygon.interiors
 
         print("Ignoring %d polygon holes" % interiors.size())
         

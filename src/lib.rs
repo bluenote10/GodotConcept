@@ -4,6 +4,8 @@ extern crate rand;
 extern crate clipping;
 extern crate geo;
 extern crate geo_booleanop;
+extern crate serde;
+extern crate serde_json;
 
 use godot::GodotString;
 use godot::NodePath;

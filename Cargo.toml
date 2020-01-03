@@ -11,7 +11,11 @@ gdnative = { path = "../godot-rust/gdnative" }
 rand = "*"
 clipping = "*"  # Note: GPL licensed, replace by Vatti algorithm eventually...
 
-geo = "*"
+geo = { version = "*", features = ["serde"] }
+geo-types = { version = "*", features = ["serde"] }
 geo-booleanop = "*"
+
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 # RUST_BACKTRACE=1 cargo watch -x build --clear
