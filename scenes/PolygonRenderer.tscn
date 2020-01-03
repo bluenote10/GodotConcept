@@ -5,42 +5,39 @@
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
-uniform float width = 3.0;
+uniform float width = 1.0;
+uniform float fade_threshold = 0.5;
 
 uniform vec4 col: hint_color = vec4(0, 0, 0, 1);
-uniform vec4 col_outside: hint_color = vec4(0.0, 0.0, 0.0, 1.0);
-uniform vec4 col_inside: hint_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform vec4 col_outside: hint_color = vec4(0.0, 0.0, 0.0, 0.0);
+uniform vec4 col_inside: hint_color = vec4(0.0, 0.0, 0.0, 0.0);
 
 varying float inside;
 
 void vertex() {
     inside = COLOR.a * 2.0 - 1.0;
     VERTEX += UV * inside * width;
-    /*
-    if (length(UV) > 1.5) {
-        inside = 1.0;
-    } else {
-        inside = -1.0;
-    }
-    */
 }
 
 void fragment() {
     COLOR = vec4(1, 0, 0, 1);
     COLOR = vec4(inside, -inside, 0, 1);
-    if (inside > 0.0) {
-        COLOR = mix(col, col_inside, inside);
+    if (inside > fade_threshold) {
+        COLOR = mix(col, col_inside, (inside - fade_threshold) / (1.0 - fade_threshold));
+    } else if (inside < -fade_threshold) {
+        COLOR = mix(col, col_outside, (-inside - fade_threshold) / (1.0 - fade_threshold));
     } else {
-        COLOR = mix(col, col_outside, -inside);
+        COLOR = col;
     }
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/width = 3.0
+shader_param/width = 2.0
+shader_param/fade_threshold = 0.5
 shader_param/col = Color( 0, 0, 0, 1 )
-shader_param/col_outside = Color( 0, 0, 0, 1 )
-shader_param/col_inside = Color( 0, 0, 0, 1 )
+shader_param/col_outside = Color( 0, 0, 0, 0 )
+shader_param/col_inside = Color( 0, 0, 0, 0 )
 
 [node name="PolygonRenderer" type="MeshInstance2D"]
 material = SubResource( 2 )
