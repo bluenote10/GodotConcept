@@ -98,9 +98,12 @@ func generate_walls_random():
 
 func generate_walls(world):
     
+    print("World has %d polygons" % world.size())
     for polygon in world:
         var exterior = polygon[0]
-        var interior = polygon[1] # thats wrong actually...
+        var interiors = polygon[1]
+
+        print("Ignoring %d polygon holes" % interiors.size())
         
         for i in exterior.size() - 1:
             var p1 = exterior[i]
@@ -110,6 +113,16 @@ func generate_walls(world):
 
             var wall_shadow = generate_wall_shadow_world(p1, p2)
             $ShadowWorldViewport.add_child(wall_shadow)
+
+        var poly = load("res://scenes/PolygonRenderer.tscn").instance()
+        poly.width = 3.0
+        poly.points = exterior
+        add_child(poly)        
+    """
+    for polygon in world:
+        var points = PoolVector2Array.new()
+        for
+    """ 
 
 
 func generate_enemies():
@@ -150,16 +163,19 @@ func _physics_process(_delta):
     $ShadowWorldViewport/Light2D.rotation = player.rotation
     # $ShadowWorldViewport.get_texture().get_data().save_png("shadows.png")
 
-    var walls = get_tree().get_nodes_in_group("walls")
-    for wall in walls:
-        if wall.has_node("Sprite"):
-            continue
+    if false:
+        # Old implementation based on raytracing + line sprites
 
-        var test_point = wall.position
-        var result = space_state.intersect_ray(player.position, test_point, [], 2)
-        if result and result.rid == wall.get_rid():
-            var rect = Sprite.new()
-            rect.texture = WALL_TEXTURE
-            rect.scale = Vector2(1 / WALL_TEXTURE.get_data().get_size().x, 10 / WALL_TEXTURE.get_data().get_size().y)
-            rect.set_name("Sprite")
-            wall.add_child(rect)
+        var walls = get_tree().get_nodes_in_group("walls")
+        for wall in walls:
+            if wall.has_node("Sprite"):
+                continue
+    
+            var test_point = wall.position
+            var result = space_state.intersect_ray(player.position, test_point, [], 2)
+            if result and result.rid == wall.get_rid():
+                var rect = Sprite.new()
+                rect.texture = WALL_TEXTURE
+                rect.scale = Vector2(1 / WALL_TEXTURE.get_data().get_size().x, 10 / WALL_TEXTURE.get_data().get_size().y)
+                rect.set_name("Sprite")
+                wall.add_child(rect)

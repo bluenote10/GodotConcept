@@ -30,6 +30,10 @@ uniform sampler2D all_visibility;
 varying vec2 world_pos;
 varying vec2 visibility_uv;
 
+float rand(vec2 co) {
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
 void vertex() {
     world_pos = (global_transform * vec4(VERTEX, 0.0, 1.0)).xy;
     visibility_uv = vec2(0.5, 0.5) + world_pos / 2048.0;
@@ -66,11 +70,14 @@ void fragment() {
     //float v = 1.0 - (d / 500.0);
     //COLOR = vec4(v, v, v, 1.0);
     
-    //COLOR = vec4(texture(all_visibility, visibility_uv).rgb, 1.0);
-}
-
-float rand(vec2 co) {
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    // Debugging code
+    /*
+    if (all_is_visible) {
+        COLOR = vec4(1, 1, 1, 1);
+    } else {
+        COLOR = vec4(0, 0, 0, 1);
+    }
+    */
 }
 
 void light() {
