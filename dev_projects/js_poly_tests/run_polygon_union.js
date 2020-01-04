@@ -25,7 +25,6 @@ function convert_input_points(points) {
 function convert_output(polygon) {
   return (
     polygon["regions"].map(region => {
-      console.log(region)
       region.push(region[0])
       return {
         exterior: region.map(point => { return {x: point[0], y: point[1]}}),
