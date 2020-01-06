@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// Test if polybooljs can handle interior/exterior properly.
+
 var PolyBool = require('polybooljs');
 
 let polygons = [
