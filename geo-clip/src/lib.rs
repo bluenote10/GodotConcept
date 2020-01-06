@@ -1,14 +1,17 @@
-//extern crate geo;
-
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
-use geo::{polygon};
+//extern crate geo;
+
 use geo::Coordinate;
+use geo::Polygon;
 
 use num_traits::Float;
 
 mod epsilon;
+
+pub use epsilon::Epsilon;
+
 
 #[derive(Copy, Clone, Debug)]
 pub struct Fill {
@@ -52,7 +55,7 @@ impl<T> Segment<T> where T: Float {
 }
 
 
-pub fn sweep<T>(self_sweep: bool, epsilon: T)
+pub fn sweep<T>(self_sweep: bool, eps: &Epsilon<T>)
 where
     T: Float
 {
@@ -60,11 +63,18 @@ where
 }
 
 
-pub fn test() {
-    let poly = polygon![
-        (x:   0., y:   0.),
-        (x: 100., y:   0.),
-        (x: 100., y:  10.),
-        (x:   0., y:  10.),
-    ];
+pub fn sweep_self<T>(poly: &Polygon<T>, eps: &Epsilon<T>)
+where
+    T: Float
+{
+
 }
+
+
+pub fn sweep_pair<T>(eps: &Epsilon<T>)
+where
+    T: Float
+{
+
+}
+

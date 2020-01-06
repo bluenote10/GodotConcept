@@ -13,7 +13,12 @@ where
 
 
 impl<T> Epsilon<T> where T: Float {
-    pub fn new(eps: T) -> Epsilon<T> {
+    pub fn new() -> Epsilon<T> {
+        let default = T::from(0.0000000001).unwrap(); // That's default in polybooljs. TODO: refine for f32.
+        Epsilon::new_with_epsilon(default)
+    }
+
+    pub fn new_with_epsilon(eps: T) -> Epsilon<T> {
         assert!(eps > T::from(0).unwrap());
         Epsilon{eps: eps}
     }
