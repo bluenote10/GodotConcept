@@ -3,6 +3,7 @@
 
 extern crate geo_clip;
 
+mod playground;
 
 use geo::{polygon};
 use geo_clip::Epsilon;
