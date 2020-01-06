@@ -9,4 +9,5 @@ edition = "2018"
 # geo-types = { version = "0.4", default-features = false }
 geo-types = "0.4"
 geo = "*"
+num-traits = "0.2"
 
